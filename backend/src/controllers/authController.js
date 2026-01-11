@@ -44,7 +44,7 @@ export const signUp = async (req, res) => {
     }
 };
 
-
+//xử lý đăng nhập người dùng
 export const signIn = async (req, res) => {
     try {
         // Lấy input từ body (username và password)
@@ -103,3 +103,28 @@ export const signIn = async (req, res) => {
         return res.status(500).json({ message: "Lỗi máy chủ, vui lòng thử lại sau" }); //500 là lỗi máy chủ
     }
 };
+
+//xử lý đăng xuất người dùng
+export const signOut = async (req, res) => {
+    try {
+        //lấy refresh token từ cookie
+
+        const token = req.cookies?.refreshToken; //sử dụng cookie-parser để lấy cookie
+        
+        if (token){
+        //xóa referesh token khỏi session
+        await Session.deleteOne({ refreshToken: token }); //xóa session khỏi database
+
+        //xóa cookie trên trình duyệt
+        res.clearCookie('refreshToken');
+        }
+        return res.sendStatus(204); //yêu cầu thành công và không có nội dung
+        
+    } catch (error) {
+        console.error('Lỗi khi đăng xuất người dùng:', error); 
+        return res.status(500).json({ message: "Lỗi máy chủ, vui lòng thử lại sau" }); //500 là lỗi máy chủ
+    }
+};
+
+
+

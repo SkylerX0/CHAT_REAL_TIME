@@ -1,12 +1,8 @@
 import express from 'express';
-import { signIn, signOut, signUp } from '../controllers/authController.js';
+import { authMe } from '../controllers/userController.js';
 
 const router = express.Router(); // Tạo một router mới từ express
 
-router.post("/signup", signUp)
-
-router.post("/signin", signIn);
-
-router.post("/signout", signOut);
+router.get("/me", authMe);
 
 export default router; // Xuất router để sử dụng trong các phần khác của ứng dụng
