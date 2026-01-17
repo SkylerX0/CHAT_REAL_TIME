@@ -5,6 +5,7 @@ npm i jsonwebtoken bcrypt cookie-parser   // bcrypt để mã hóa mật khẩu,
 
 Front-end Packages:
 npm i react-router axios lucide-react tailwindcss @tailwindcss/vite tailwindcss-animate zustand zod react-hook-form @hookform/resolvers sonner
+npm i -D @types/node
 
 ## Cách chạy dự án
 
