@@ -126,5 +126,40 @@ export const signOut = async (req, res) => {
     }
 };
 
+//tạo accessToken mới từ refreshToken
+export const refreshToken = async (req, res) => {
+    try {
+        //lấy refresh token từ cookie
+        const token = req.cookies?.refreshToken; //sử dụng cookie-parser để lấy cookie, cookies? dấu hỏi để kiểm tra trong req có cookies nào ko nếu có thì try cập tiếp vào refreshToken 
+        if (!token) {
+            return  res.status(401).json({ message: "token ko tồn tại" }); //401 là lỗi xác thực, nghĩa là người dùng chưa đăng nhập hoặc ko tồn tại
+        }
+
+        //so sanh với refresh token trong database
+        const session = await Session.findOne({ refreshToken: token });
+
+        if (!session) {
+            return res.status(403).json({ message: "token ko hợp lệ" }); //403 là lỗi cấm truy cập, nghĩa là người dùng ko có quyền truy cập tài nguyên này
+        }
+
+        //kiễm tra thời gian hết hạn chưa
+        if (session.expiresAt < new Date()) {
+            
+            return res.status(403).json({ message: "token đã hết hạn" }); //403 là lỗi cấm truy cập, nghĩa là người dùng ko có quyền truy cập tài nguyên này
+        }
+
+        //nếu hợp lệ tạo access token mới và trả về cho người dùng
+        const accessToken = jwt.sign({
+            userId: session.userId
+        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_TTL });
+
+        //trả về access token về trong return
+        return res.status(200).json({ accessToken });
+
+    } catch (error) {
+        console.error('Lỗi khi gọi refreshToken:', error);
+        return res.status(500).json({ message: "Lỗi máy chủ, vui lòng thử lại sau" }); //500 là lỗi máy chủ
+    }
+};
 
 
