@@ -7,6 +7,8 @@ Front-end Packages:
 npm i react-router axios lucide-react tailwindcss @tailwindcss/vite tailwindcss-animate zustand zod react-hook-form @hookform/resolvers sonner
 npm i -D @types/node
 
+npx shadcn@latest add switch badge dialog textarea popover      
+
 ## Cách chạy dự án
 
 1. Clone dự án từ GitHub:
