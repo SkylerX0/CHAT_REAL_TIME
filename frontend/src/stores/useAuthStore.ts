@@ -2,8 +2,11 @@ import { create } from 'zustand';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
 import type { AuthState } from '@/types/store';
+import { persist } from 'zustand/middleware';
+import { useChatStore } from './useChatStore';
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>()(
+    persist((set, get) => ({
     accessToken: null,
     user: null,
     loading: false, // dung để theo dõi trạng thái api(đăng nhập/đăng xuất)
@@ -12,6 +15,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
     clearState: () => {
         set({accessToken: null, user: null, loading: false});
+        localStorage.clear(); // xóa tất cả dữ liệu trong localStorage để đảm bảo không còn thông tin xác thực nào được lưu trữ sau khi đăng xuất
+        useChatStore.getState().reset(); // reset lại trạng thái của store chat để xóa sạch dữ liệu liên quan đến cuộc trò chuyện và tin nhắn sau khi đăng xuất
+        
     },
 
     signUp: async (username, password, email, firstName, lastName) => {
@@ -33,6 +39,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     signIn: async (username, password) => {
         try {
             set({loading: true}); // bắt đầu gọi api
+
+            localStorage.clear(); // xóa tất cả dữ liệu trong localStorage trước khi đăng nhập để đảm bảo không còn thông tin xác thực nào được lưu trữ từ lần đăng nhập trước đó
+            useChatStore.getState().reset(); // reset lại trạng thái của store chat để xóa sạch dữ liệu liên quan đến cuộc trò chuyện và tin nhắn từ lần đăng nhập trước đó
 
             const {accessToken} = await authService.signIn(username, password);
             // set({accessToken});
@@ -98,4 +107,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             set({loading: false}); // kết thúc gọi api
         }
     }
-}));
+}), {
+    name: "auth-storage", // tên của storage để lưu trữ trạng thái xác thực vào localStorage hoặc sessionStorage
+    partialize: (state) =>({user: state.user}) // chiỉ lưu trữ thông tin user vào storage, không lưu accessToken để tăng cường bảo mật
+})
+);
