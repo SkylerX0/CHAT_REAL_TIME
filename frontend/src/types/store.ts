@@ -40,4 +40,9 @@ export interface ChatState {
     reset: () => void; // để reset lại trạng thái của store về giá trị mặc định, thường được sử dụng khi người dùng đăng xuất để xóa sạch dữ liệu liên quan đến cuộc trò chuyện và tin nhắn khỏi store.
 
     setActiveConversationId: (conversationId: string | null) => void; // để cập nhật ID của cuộc trò chuyện đang hoạt động khi người dùng chọn một cuộc trò chuyện khác hoặc khi họ đăng xuất (đặt về null)
+    fetchConversations: () => Promise<void>; // để gọi API và lấy danh sách các cuộc trò chuyện của người dùng, sau đó cập nhật trạng thái conversations trong store
+
+
+
+
 }
