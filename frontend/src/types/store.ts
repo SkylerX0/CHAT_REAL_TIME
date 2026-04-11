@@ -45,11 +45,18 @@ export interface ChatState {
     fetchConversations: () => Promise<void>; // để gọi API và lấy danh sách các cuộc trò chuyện của người dùng, sau đó cập nhật trạng thái conversations trong store
 
     fetchMessages: (conversationId?: string) => Promise<void>;
-    // sendDirectMessage: (
-    //     recipientId: string,
-    //     content: string,
-    //     imgUrl?: string
-    // ) => Promise<void>;
+    
+    // để gọi API và lấy tin nhắn của một cuộc trò chuyện cụ thể dựa trên conversationId, sau đó cập nhật trạng thái messages trong store. Nếu conversationId không được cung cấp, có thể sử dụng activeConversationId để lấy tin nhắn của cuộc trò chuyện đang hoạt động.
+    sendDirectMessage: (
+        recipientId: string,
+        content: string,
+        imgUrl?: string
+    ) => Promise<void>;
+    sendGroupMessage: (
+        conversationId: string,
+        content: string,
+        imgUrl?: string
+    ) => Promise<void>;
 
 
 }
