@@ -6,10 +6,11 @@ import userRoute from './routes/userRoute.js';
 import cookieParser from 'cookie-parser';
 import { protectedRoute } from './middlewares/authMiddleware.js';
 import cors from 'cors';
+import { app, server } from './socket/index.js'; // import socket.io và server từ file socket/index.js
 
 dotenv.config(); // hàm này sẽ đọc file .env và gán các biến môi trường
 
-const app = express(); // khởi tạo ứng dụng express
+// const app = express(); // khởi tạo ứng dụng express
 const PORT = process.env.PORT || 5001; // sử dụng biến môi trường PORT từ file .env hoặc mặc định là 5001
 
 //middlewares
@@ -31,7 +32,7 @@ app.use('/api/users', userRoute);
 
 //kết nối DB và khởi động server
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`server bắt đầu trên cổng ${PORT}`);// khởi động server 
   });
 });
