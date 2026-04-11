@@ -1,4 +1,5 @@
 // dùng để mô tả cấu trúc dữ liệu trong store xác thực
+import type { Socket } from "socket.io-client";
 import type { Conversation, Message } from './chat';
 import type { User } from './user';
 
@@ -58,5 +59,11 @@ export interface ChatState {
         imgUrl?: string
     ) => Promise<void>;
 
+}
 
+export interface SocketState {
+  socket: Socket | null;
+  onlineUsers: string[];
+  connectSocket: () => void;
+  disconnectSocket: () => void;
 }

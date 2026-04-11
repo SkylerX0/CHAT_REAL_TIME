@@ -8,11 +8,13 @@ import { cn } from '@/lib/utils';
 import UserAvata from './UserAvatar';
 import StatusBadge from './StatusBadge';
 import UnreadCountBadge from './UnreadCountBadge';
+import { useSocketStore } from '@/stores/useSocketStore';
 
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
     const { user } = useAuthStore();
     const { activeConversationId, setActiveConversationId, messages, fetchMessages } = useChatStore();
+    const { onlineUsers } = useSocketStore();
 
     if (!user) return; // nếu chưa có user thì không render gì cả
 
@@ -47,7 +49,9 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
                     />
                     {/* todo: sẽ sử lý offline hay onl sau khi có socket.io */}
                     <StatusBadge
-                        status='offline'
+                        status={
+                    onlineUsers.includes(otherUser?._id ?? "") ? "online" : "offline"
+                  }
                     />
                     {
                         unreadCount > 0 && <UnreadCountBadge unreadCount={unreadCount} />
