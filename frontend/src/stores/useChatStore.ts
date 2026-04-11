@@ -75,7 +75,45 @@ export const useChatStore = create<ChatState>()(
 
 
 
+        },
+        sendDirectMessage: async (recipientId, content, imgUrl) => {
+        try {
+          const { activeConversationId } = get();
+          await chatService.sendDirectMessage(
+            recipientId,
+            content,
+            imgUrl,
+            activeConversationId || undefined
+          );
+          set((state) => ({
+            conversations: state.conversations.map((c) =>
+              c._id === activeConversationId ? { ...c, seenBy: [] } : c
+            ),
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi gửi direct message", error);
         }
+      },
+
+    //   hàm sendGroupMessage chịu trách nhiệm gửi tin nhắn mới đến một cuộc trò chuyện 
+    // nhóm cụ thể dựa trên conversationId và nội dung tin nhắn. 
+    //   Sau khi gửi thành công, nó sẽ cập nhật lại trạng thái conversations 
+    // trong store để đánh dấu cuộc trò chuyện này đã có tin nhắn mới 
+    //   (bằng cách đặt seenBy thành một mảng rỗng) để khi người dùng 
+    // quay lại danh sách cuộc trò chuyện sẽ thấy cuộc trò chuyện này có 
+    //   tin nhắn mới chưa đọc.
+      sendGroupMessage: async (conversationId, content, imgUrl) => {
+        try {
+          await chatService.sendGroupMessage(conversationId, content, imgUrl);
+          set((state) => ({
+            conversations: state.conversations.map((c) =>
+              c._id === get().activeConversationId ? { ...c, seenBy: [] } : c
+            ),
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra gửi group message", error);
+        }
+      },
     }), {
         name: "chat-storage", // tên của storage để lưu trữ trạng thái chat vào localStorage hoặc sessionStorage
         partialize: (state) => ({ conversations: state.conversations }) // chỉ lưu trữ thông tin conversations  vào storage, không lưu activeConversationId và loading để tránh lỗi khi khôi phục trạng thái từ storage
