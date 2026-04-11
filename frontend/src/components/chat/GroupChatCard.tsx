@@ -8,7 +8,7 @@ import GroupChatAvatar from './GroupChatAvatar';
 
 const GroupChatCard = ({ convo }: { convo: Conversation }) => {
   const {user} = useAuthStore();
-  const {activeConversationId, setActiveConversationId, messages} = useChatStore();
+  const {activeConversationId, setActiveConversationId, messages, fetchMessages } = useChatStore();
 
   if (!user) return; // nếu chưa có user thì không render gì cả
 
@@ -18,7 +18,7 @@ const GroupChatCard = ({ convo }: { convo: Conversation }) => {
     setActiveConversationId(id); // cập nhật activeConversationId trong store khi người dùng chọn một cuộc trò chuyện
     if (!messages[id]) {
       // todo: fetch messages của cuộc trò chuyện này nếu chưa có trong store để hiển thị khi người dùng chọn cuộc trò chuyện đó
-
+      await fetchMessages(); // nếu chưa có tin nhắn nào được tải cho cuộc trò chuyện này thì gọi API để tải tin nhắn
     }
   }
 

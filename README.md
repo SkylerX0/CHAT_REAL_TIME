@@ -6,6 +6,8 @@ npm i jsonwebtoken bcrypt cookie-parser   // bcrypt để mã hóa mật khẩu,
 Front-end Packages:
 npm i react-router axios lucide-react tailwindcss @tailwindcss/vite tailwindcss-animate zustand zod react-hook-form @hookform/resolvers sonner
 npm i -D @types/node
+    //thư viện emoji cho frontend
+    npm i emoji-mart @emoji-mart/data @emoji-mart/react       
 
 npx shadcn@latest add switch badge dialog textarea popover      
 
