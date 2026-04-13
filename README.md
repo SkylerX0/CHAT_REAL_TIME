@@ -1,0 +1,32 @@
+Back-end Packages:
+npm i express cors mongoose dotenv
+npm i jsonwebtoken bcrypt cookie-parser   // bcrypt để mã hóa mật khẩu, cookie-parser hỗ trợ đọc cookie từ request
+    //thêm thư viện socket cho backend (để giúp tin nhắn đc đồng bộ và realtime)
+    npm socket.io   
+
+
+Front-end Packages:
+npm i react-router axios lucide-react tailwindcss @tailwindcss/vite tailwindcss-animate zustand zod react-hook-form @hookform/resolvers sonner
+npm i -D @types/node
+    //thư viện emoji cho frontend
+    npm i emoji-mart @emoji-mart/data @emoji-mart/react    
+    //thêm thư viện ui cho scrollbar
+    npm i tailwind-scrollbar          
+    // thêm thư viện socket cho bên client
+    npm i socket.io-client   
+
+npx shadcn@latest add switch badge dialog textarea popover      
+
+## Cách chạy dự án
+
+1. Clone dự án từ GitHub:
+   ```bash
+   git clone <URL_GITHUB_REPO>
+
+2. Di chuyển vào thư mục dự án:
+    - folder frontend: cd frontend 
+    - folder backend: cd backend
+    - folder backend sẽ cần tạo thêm file .env
+3. Cài đặt các dependencies: npm install
+4. Chạy dự án: npm run dev
+5. Mở trình duyệt và truy cập vào địa chỉ được cung cấp
